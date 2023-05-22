@@ -15,12 +15,12 @@ activityNames <- fread(file.path(path, "/activity_labels.txt")
                        , col.names = c("S.No", "activityName"))
 features <- fread(file.path(path, "/features.txt")
                   , col.names = c("S.No", "featureNames"))
-featuresWanted <- grep("(mean|std)\\(\\)", features[, featureNames])
-measurements <- features[featuresWanted, featureNames]
+desiredFeatures <- grep("(mean|std)\\(\\)", features[, featureNames])
+measurements <- features[desiredFeatures, featureNames]
 measurements <- gsub('[()]', '', measurements)
 
 # Load train datasets
-train <- fread(file.path(path, "/train/X_train.txt"))[, featuresWanted, with = FALSE]
+train <- fread(file.path(path, "/train/X_train.txt"))[, desiredFeatures, with = FALSE]
 data.table::setnames(train, colnames(train), measurements)
 trainActivities <- fread(file.path(path, "/train/Y_train.txt")
                          , col.names = c("Activity"))
@@ -29,7 +29,7 @@ trainSubjects <- fread(file.path(path, "/train/subject_train.txt")
 train <- cbind(trainSubjects, trainActivities, train)
 
 # Load test datasets
-test <- fread(file.path(path, "/test/X_test.txt"))[, featuresWanted, with = FALSE]
+test <- fread(file.path(path, "/test/X_test.txt"))[, desiredFeatures, with = FALSE]
 data.table::setnames(test, colnames(test), measurements)
 testActivities <- fread(file.path(path, "/test/Y_test.txt")
                         , col.names = c("Activity"))
