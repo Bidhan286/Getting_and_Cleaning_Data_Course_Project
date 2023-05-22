@@ -12,7 +12,7 @@ path <- "C:/Users/bidhan.chakraborty/Downloads/R/UCI_HAR_Dataset"
 
 # Load activity labels + features
 activityNames <- fread(file.path(path, "/activity_labels.txt")
-                        , col.names = c("S.No", "activityName"))
+                       , col.names = c("S.No", "activityName"))
 features <- fread(file.path(path, "/features.txt")
                   , col.names = c("S.No", "featureNames"))
 featuresWanted <- grep("(mean|std)\\(\\)", features[, featureNames])
