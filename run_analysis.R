@@ -10,7 +10,7 @@ if (any(installed_packages == FALSE)) {
 sapply(packages, require, character.only=TRUE, quietly=TRUE)
 path <- "C:/Users/bidhan.chakraborty/Downloads/R/UCI_HAR_Dataset"
 
-# Load activity labels + feature
+# Load activity labels + features
 activityNames <- fread(file.path(path, "/activity_labels.txt")
                        , col.names = c("S.No", "activityName"))
 features <- fread(file.path(path, "/features.txt")
@@ -42,11 +42,19 @@ combined <- rbind(train, test)
 
 # Convert classLabels to activityName basically. More explicit. 
 combined[["Activity"]] <- factor(combined[, Activity]
-                                 , levels = activityLabels[["classLabels"]]
-                                 , labels = activityLabels[["activityName"]])
+                                 , levels = activityNames[["S.No"]]
+                                 , labels = activityNames[["activityName"]])
 
 combined[["SubjectNum"]] <- as.factor(combined[, SubjectNum])
 combined <- reshape2::melt(data = combined, id = c("SubjectNum", "Activity"))
 combined <- reshape2::dcast(data = combined, SubjectNum + Activity ~ variable, fun.aggregate = mean)
+
+names(combined)<-gsub("Acc", "Accelerometer", names(combined))
+names(combined)<-gsub("Gyro", "Gyroscope", names(combined))
+names(combined)<-gsub("BodyBody", "Body", names(combined))
+names(combined)<-gsub("Mag", "Magnitude", names(combined))
+names(combined)<-gsub("^t", "Time", names(combined))
+names(combined)<-gsub("^f", "Frequency", names(combined))
+names(combined)<-gsub("tBody", "TimeBody", names(combined))
 
 data.table::fwrite(x = combined, file = "tidyData.txt", quote = FALSE)
