@@ -10,7 +10,7 @@ if (any(installed_packages == FALSE)) {
 sapply(packages, require, character.only=TRUE, quietly=TRUE)
 path <- "C:/Users/bidhan.chakraborty/Downloads/R/UCI_HAR_Dataset"
 
-# Load activity labels + features
+# Load activity labels + feature
 activityNames <- fread(file.path(path, "/activity_labels.txt")
                        , col.names = c("S.No", "activityName"))
 features <- fread(file.path(path, "/features.txt")
